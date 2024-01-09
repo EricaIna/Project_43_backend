@@ -622,12 +622,12 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:2cf0005922c6ace4a3e2ec8b4080eb0d9753fdc93107415332f50ce9e7994280",
-                "sha256:b090cdf5ed60bf4c45261be03239c2c1c22df034fbffe691abe93cd80cea01d8"
+                "sha256:6c30d4c4409c5d227ef936678b72c56b6fbaed28a6ee4eafd2c93ed9a24c65af",
+                "sha256:b5baeee6fb27cbca444fc1bab2ee7e1934f93daa50a4d475a6d0f819c263e573"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==7.4.4"
+            "markers": "python_version >= '3.8'",
+            "version": "==8.0.0rc1"
         },
         "pytest-cov": {
             "hashes": [

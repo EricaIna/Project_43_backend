@@ -32,3 +32,5 @@ def create_app(env=None):
 
     return app
     # from application import routes
+
+create_app()

@@ -26,4 +26,5 @@ print("Creating database")
 #print("add entry123456")
 db.session.commit()
 print("commit")
+print(db)
 

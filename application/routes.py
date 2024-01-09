@@ -9,11 +9,8 @@ def hello():
         "description": "Movies API",
         "endpoints": [
             "GET / 200|500",
-            "GET /movies"
-            "GET /movies/<int:id>",
-            "POST /movies",
-            "PATCH /movies<int:id>",
-            "DELETE /movies<int:id>"
+            "GET /movies",
+            "GET /movies/<int:id>"
         ]
     }), 200
 
