@@ -41,8 +41,8 @@ def create_token():
 
 def my_profile():
     response_body = {
-        "name": "Nagato",
-        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+        "name": "New user",
+        "about" :"Hello!"
     }
 
     return response_body

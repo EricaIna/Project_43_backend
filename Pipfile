@@ -11,6 +11,8 @@ flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 requests = "*"
 flask-jwt-extended = "*"
+scikit-learn = "*"
+pandas = "*"
 
 [dev-packages]
 pytest = "*"
