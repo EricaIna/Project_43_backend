@@ -11,6 +11,7 @@ flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 requests = "*"
 flask-jwt-extended = "*"
+colorama = "*"
 
 [dev-packages]
 pytest = "*"
