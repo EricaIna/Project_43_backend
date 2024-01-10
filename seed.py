@@ -5,7 +5,6 @@ from application.auth.models import User
 from application.user_film_list.models import UserFilmList
 
 app = create_app("PROD")
-
 db.drop_all()
 print("Dropping Database")
 
@@ -23,4 +22,3 @@ print("Creating database")
 
 db.session.commit()
 print("commit")
-
