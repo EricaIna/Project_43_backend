@@ -2,6 +2,7 @@ import pandas as pd
 from sqlalchemy import text
 from application import db,create_app
 from application.auth.models import User
+from application.user_film_list.models import UserFilmList
 
 app = create_app("PROD")
 db.drop_all()
@@ -17,6 +18,7 @@ print("movies dataset saved")
 
 db.create_all()
 print("Creating database")
+
 
 db.session.commit()
 print("commit")
