@@ -9,12 +9,16 @@ class Reviews(db.Model):
     Timestamp = db.Column(db.DateTime)
     Rating = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+    movies_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
 
-    def __init__(self, title, content, rating, user_id, movie_id):
+    def __init__(self, title, content, rating, user_id, movies_id):
         self.Title = title
         self.Content = content
         self.Rating = rating
         self.user_id = user_id
-        self.movie_id = movie_id
+        self.movies_id = movies_id
         self.Timestamp = datetime.utcnow()
+
+db.Index('reviews_unique_title', Reviews.Title, unique=True)
+db.ForeignKeyConstraint(['movies_id'], ['movies.id'])
+

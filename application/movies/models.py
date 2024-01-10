@@ -2,7 +2,7 @@ from .. import db
 
 class Movie(db.Model):
     __tablename__ = "movies"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     # level_0 = db.Column(db.Integer, nullable=False)
     # index = db.Column(db.Integer, nullable=False)
     # budget = db.Column(db.Integer, nullable=False)
@@ -40,3 +40,5 @@ class Movie(db.Model):
             "id": self.id,
             "original_title": self.original_title
         }
+    
+    

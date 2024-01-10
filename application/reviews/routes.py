@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from .models import Movies
+from ..movies.models import Movie
 from .controllers import (
     create_review,
     get_reviews,
@@ -8,10 +8,11 @@ from .controllers import (
     delete_review
 )
 
-app = Flask(__name__)
+# Create a blueprint
+reviews_bp = Blueprint('reviews', __name__)
 
 # Create review
-@app.route('/reviews', methods=['POST'])
+@reviews_bp.route('/reviews', methods=['POST'])
 @login_required
 def create_review_route():
     data = request.json
@@ -24,13 +25,13 @@ def create_review_route():
     return jsonify(result)
 
 # Get reviews
-@app.route('/reviews/<int:movie_id>', methods=['GET'])
+@reviews_bp.route('/reviews/<int:movie_id>', methods=['GET'])
 def get_reviews_route(movie_id):
     result = get_reviews(movie_id)
     return jsonify(result)
 
 # Update reviews
-@app.route('/reviews/<int:review_id>', methods=['PATCH'])
+@reviews_bp.route('/reviews/<int:review_id>', methods=['PUT'])
 @login_required
 def update_review_route(review_id):
     new_data = request.json
@@ -39,13 +40,9 @@ def update_review_route(review_id):
     return jsonify(result)
 
 # Delete review
-@app.route('/reviews/<int:review_id>', methods=['DELETE'])
+@reviews_bp.route('/reviews/<int:review_id>', methods=['DELETE'])
 @login_required
 def delete_review_route(review_id):
     user_id = current_user.id
     result = delete_review(review_id, user_id)
     return jsonify(result)
-
-if __name__ == '__main__':
-    app.run()
-    

@@ -23,6 +23,7 @@ def create_app(env=None):
     print(os.environ["SQLALCHEMY_DATABASE_URI"])
     app.app_context().push()
 
+
     from application.auth.routes import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
@@ -35,6 +36,9 @@ def create_app(env=None):
 
     from application.user_film_list.routes import movies_list
     app.register_blueprint(movies_list)
+
+    from application.reviews.routes import reviews_bp
+    app.register_blueprint(reviews_bp)
 
 
     #This is required to call methods like create_access_toke() and others from Flask-JWT-Extended
