@@ -61,10 +61,30 @@ def recommend(id):
 
 
 def show_movie_details(id,movie_id):
-    pass
+    df=get_df()
+    movie_info = df[df['index'] == movie_id]['original_title'].values
+    return jsonify({"movie details": movie_info}), 200
+
 
 def add_movie(id,movie_id):
-    pass
+    user_film_instance = UserFilmList.query.get(id)
+
+    if user_film_instance:
+        user_film_instance.movie_ids.append(new_movie_id)
+        db.session.commit()
+        return jsonify({"message": "Movie added successfully"}), 200
+    else:
+        return jsonify({"message": "UserFilmList not found"}), 404
+
 
 def remove_movie(id,movie_id):
-    pass
+    user_film_instance = UserFilmList.query.get(id)
+    if user_film_instance:
+        if movie_id in user_film_instance.movie_ids:
+            user_film_instance.movie_ids.remove(movie_id)
+            db.session.commit()
+            return jsonify({"message": "Movie removed successfully"}), 200
+        else:
+            return jsonify({"message": "Movie not found in user's list"}), 404
+    else:
+        return jsonify({"message": "UserFilmList not found"}), 404
