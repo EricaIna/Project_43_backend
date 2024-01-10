@@ -1,8 +1,9 @@
 from .. import db
-from .models import Reviews, Movies
+from .models import Reviews
+from ..movies.models import Movie
 
 def create_review(movie_id, title, content, rating, user_id):
-    movie = Movies.query.get(movie_id)
+    movie = Movie.query.get(movie_id)
     if not movie:
         return {'message': 'Movie not found'}, 404
     review = Reviews(
@@ -17,7 +18,7 @@ def create_review(movie_id, title, content, rating, user_id):
     return {'message': 'Review created successfully'}, 201
 
 def get_reviews(movie_id):
-    movie = Movies.query.get(movie_id)
+    movie = Movie.query.get(movie_id)
     if not movie:
         return {'message': 'Movie not found'}, 404
     reviews = Reviews.query.filter_by(movie_id=movie_id).all()
