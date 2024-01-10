@@ -10,6 +10,11 @@ def get_model():
         g.model = train_model()
     return g.model
 
+#make data frame availible to the flask app
+def get_df():
+    if 'df' not in g:
+        g.df = pd.read_sql(sql='movies', con=db.engine)
+    return g.df
 
 def get_title_from_index(index):
     return df[df.index == index]["title"].values[0]
@@ -20,8 +25,8 @@ def get_index_from_title(title):
 
 
 def train_model():
-    df = pd.read_sql(sql='movies', con=db.engine)
-
+    # df = pd.read_sql(sql='movies', con=db.engine)
+    df=get_df()
     features = ['keywords', 'cast', 'genres', 'director']
 
     def combine_features(row):

@@ -15,7 +15,7 @@ class UserFilmList(db.Model):
 
 
     def __repr__(self):
-        return f"Book (id:{self.id},movie_ids:{self.movie_ids}, title:{self.title})"
+        return f"Movie (id:{self.id},movie_ids:{self.movie_ids}, title:{self.title})"
     
     @classmethod
     def search_movie(cls, movie_name):
