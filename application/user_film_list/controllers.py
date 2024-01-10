@@ -22,14 +22,14 @@ def show(id):
 
 def create():
     try:
-        user_id,fav_film_id,title = request.json.values()
+        user_id,title = request.json.values()
 
-        new_movie = UserFilmList(ser_id,fav_film_id,title)
+        new_movie_list = UserFilmList(user_id,title)
 
-        db.session.add(new_movie)
+        db.session.add(new_movie_list)
         db.session.commit()
 
-        return jsonify({ "data": new_movie.json }), 201
+        return jsonify({ "data": new_movie_list.json }), 201
     except:
         raise exceptions.BadRequest(f"We cannot process your request")
 
@@ -37,58 +37,34 @@ def create():
 
 def update(id):
     data = request.json
-    movie = UserFilmList.query.filter_by(id=id).first()
+    movie_list = UserFilmList.query.filter_by(id=id).first()
 
     for (attribute, value) in data.items():
-        if hasattr(movie, attribute):
-            setattr(movie, attribute, value)
+        if hasattr(movie_list, attribute):
+            setattr(movie_list, attribute, value)
 
     db.session.commit()
-    return jsonify({ "data": movie.json })
+    return jsonify({ "data": movie_list.json })
+
 
 def destroy(id):
-    movie = UserFilmList.query.filter_by(id=id).first()
-    db.session.delete(movie)
+    movie_list = UserFilmList.query.filter_by(id=id).first()
+    db.session.delete(movie_list)
     db.session.commit()
-    return "movie Deleted", 204
+    return "movie list Deleted", 204
+
+
+def recommend(id):
+    movie_list = UserFilmList.query.filter_by(id=id).first()
+#Add a new movie to the movie_list, based on the result of 'recommend_movie' result
 
 
 
-# Route for searching and adding a movie to the user's list
-
-def search_and_add():
+def show_movie_details(id,movie_id):
     pass
-    # try:
-    #     # Get the movie name from front-end
-    #     movie_name = request.json.get('movie_name')
 
-    #     movie = Movie.search_movie(movie_name)//how to use the data base?
+def add_movie(id,movie_id):
+    pass
 
-    #     if movie:
-
-    #         user_id = request.json.get('user_id')
-
-    #         # Check if the movie is already in the user's list to avoid duplicates
-    #         if not UserFilmList.is_movie_in_user_list(user_id, movie.id):
-    #             # If not, add the movie to the user's list
-    #             new_movie = UserFilmList(
-    #                 fav_film_id=movie.fav_film_id,
-    #                 title=movie.title,
-                    
-    #                 user_id=user_id  # Associate the movie with the user
-    #             )
-
-    #             db.session.add(new_movie)
-    #             db.session.commit()
-
-    #             return jsonify({"data": new_movie.json}), 201
-    #         else:
-    #             return jsonify({"message": "Movie already in user's list"}), 400
-    #     else:
-    #         return jsonify({"message": "Movie not found"}), 404
-    # except IntegrityError:
-    #     db.session.rollback()
-    #     return jsonify({"message": "IntegrityError occurred"}), 500
-    # except Exception as e:
-    #     return jsonify({"message": f"We cannot process your request. Error: {str(e)}"}), 500
-
+def remove_movie(id,movie_id):
+    pass
