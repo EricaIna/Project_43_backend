@@ -1,6 +1,6 @@
 from flask import request, Blueprint
 from werkzeug import exceptions
-from .controllers import index, create, show, update, destroy
+from .controllers import index, create, show, update, destroy,show_movie_details,add_movie,remove_movie
 
 movies_list = Blueprint("movies_list", __name__)
 
@@ -17,7 +17,7 @@ def handle_movie_list(id):
 
 
 @movies_list.route('/movies_list_manage/<int:id>/<int:movie_id>', methods=["GET", "PATCH", "DELETE"])
-def handle_movie(id):
+def handle_movie(id,movie_id):
     if request.method == "GET": return show_movie_details(id,movie_id)
     if request.method == "PATCH": return add_movie(id,movie_id)
     if request.method == "DELETE": return remove_movie(id,movie_id)
