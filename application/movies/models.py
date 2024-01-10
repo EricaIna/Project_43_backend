@@ -15,18 +15,16 @@ class Movie(db.Model):
     # name = db.Column(db.String(100), nullable=False)
     # population = db.Column(db.Integer, nullable=False)
     # capital_city = db.Column(db.String(100), nullable=False)
-    homepage = db.Column(db.String(600), nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     director = db.Column(db.String(100), nullable=False)
 
 
-    def __init__(self, original_title, genres, original_language, overview, vote_average, homepage, release_date, director): # constructor
+    def __init__(self, original_title, genres, original_language, overview, vote_average, release_date, director): # constructor
         self.genres = genres
         self.original_language = original_language
         self.original_title = original_title
         self.overview = overview
         self.vote_average = vote_average
-        self.homepage = homepage
         self.release_date = release_date
         self.director = director
 
@@ -38,5 +36,10 @@ class Movie(db.Model):
     def json(self): # create a json from of an instance
         return {
             "id": self.id,
-            "original_title": self.original_title
+            "original_title": self.original_title,
+            # "original_language": self.original_language,
+            # "overview": self.overview,
+            # "vote_average": self.vote_average,
+            # "release_date": self.release_date,
+            # "director": self.director
         }
