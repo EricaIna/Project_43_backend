@@ -21,3 +21,4 @@ print("movies dataset saved")
 
 db.session.commit()
 print("commit")
+

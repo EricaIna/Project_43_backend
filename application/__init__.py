@@ -29,8 +29,13 @@ def create_app(env=None):
     from application.routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+
+    from application.movies.routes import movies_blueprint as movies_blueprint
+    app.register_blueprint(movies_blueprint)
+
     from application.user_film_list.routes import movies_list
     app.register_blueprint(movies_list)
+
 
     #This is required to call methods like create_access_toke() and others from Flask-JWT-Extended
     jwt = JWTManager(app)
