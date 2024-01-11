@@ -2,16 +2,17 @@ import pandas as pd
 from sqlalchemy import text
 from application import db,create_app
 from application.auth.models import User
+
 from application.reviews.models import Reviews
+from application.user_film_list.models import UserFilmList
+
 
 app = create_app("PROD")
-
 db.drop_all()
 print("Dropping Database")
 
 result = db.session.execute(text('DROP TABLE IF EXISTS movies;'))
 db.session.commit()
-
 
 print("saving movies")
 df = pd.read_csv("./movie_dataset.csv")
@@ -20,6 +21,7 @@ print("movies dataset saved")
 
 db.create_all()
 print("Creating database")
+
 
 # Seed reviews data
 print("Saving reviews")

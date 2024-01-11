@@ -1,15 +1,18 @@
 from flask import request, Blueprint
+from flask_jwt_extended import jwt_required
 from werkzeug import exceptions
-from .controllers import index, create, show, update, destroy
+from .controllers import index, create, show, update, destroy,show_movie_details,add_movie,remove_movie
 
 movies_list = Blueprint("movies_list", __name__)
 
 @movies_list.route('/movies_list', methods=["GET", "POST"])
+@jwt_required()
 def handle_movies():
     if request.method == "POST": return create()
     if request.method == "GET": return index()
 
 @movies_list.route('/movies_list/<int:id>', methods=["GET", "PATCH", "DELETE"])
+@jwt_required()
 def handle_movie_list(id):
     if request.method == "GET": return show(id)
     if request.method == "PATCH": return update(id)
@@ -17,13 +20,15 @@ def handle_movie_list(id):
 
 
 @movies_list.route('/movies_list_manage/<int:id>/<int:movie_id>', methods=["GET", "PATCH", "DELETE"])
-def handle_movie(id):
+@jwt_required()
+def handle_movie(id,movie_id):
     if request.method == "GET": return show_movie_details(id,movie_id)
     if request.method == "PATCH": return add_movie(id,movie_id)
     if request.method == "DELETE": return remove_movie(id,movie_id)
 
 
 @movies_list.route('/movies_list_recommend/<int:id>', methods=["PATCH"])
+@jwt_required()
 def recommend_movie():
     if request.method == "PATCH": return recommend(id)
 
@@ -42,5 +47,6 @@ def handle_400(err):
 
 # Route for searching and adding a movie to the user's list
 @movies_list.route('/search-and-add', methods=['POST'])
+@jwt_required()
 def handle_search_and_add():
-    return search_and_add()
+    return search_and_add() 

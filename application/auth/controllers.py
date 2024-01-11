@@ -5,7 +5,7 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
     unset_jwt_cookies
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-from .models import User
+from .models import User 
 
 
 def refresh_expiring_jwts(response):
@@ -21,7 +21,7 @@ def refresh_expiring_jwts(response):
                 response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):
-        # Case where there is not a valid JWT. Just return the original respone
+        # Case where there is not a valid JWT. Just return the original response
         return response
 
 
@@ -35,7 +35,7 @@ def create_token():
     if not user or not check_password_hash(user.password, password):
         return {"msg": "Wrong email or password"}, 401
 
-    access_token = create_access_token(identity=email)
+    access_token = create_access_token(identity=user.id)
     response = {"access_token":access_token}
     return response
 
@@ -74,3 +74,4 @@ def user_signup():
 
     response = jsonify({"msg": "signup successful"})
     return response
+
