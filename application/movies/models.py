@@ -32,21 +32,21 @@ class Movie(db.Model):
             "release_date": self.release_date
         }
 
-class Genre(db.Model):
-    __tablename__ = "genres"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(300), nullable=False)
+# class Genre(db.Model):
+#     __tablename__ = "genres"
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, name): # constructor
-        self.name= name
+#     def __init__(self, name): # constructor
+#         self.name= name
     
-    def __repr__(self):
-        return f"Genre(id:  {self.id}, name: {self.name})"
+#     def __repr__(self):
+#         return f"Genre(id:  {self.id}, name: {self.name})"
     
-    @property
-    def json(self): # create a json from of an instance
-        return {
-            "id": self.id,
-            "name": self.name
-        }
+#     @property
+#     def json(self): # create a json from of an instance
+#         return {
+#             "id": self.id,
+#             "name": self.name
+#         }
        
