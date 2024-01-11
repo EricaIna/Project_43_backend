@@ -10,7 +10,9 @@ def hello():
         "endpoints": [
             "GET / 200|500",
             "GET /movies",
-            "GET /movies/<int:id>"
+            "GET /movies/<int:id>",
+            "GET /movies/top",
+            "GET /movies/upcoming"
         ]
     }), 200
 

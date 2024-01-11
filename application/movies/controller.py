@@ -78,6 +78,18 @@ def upcoming():
     response = requests.get(url, headers=headers)
 
     return response.json()
+
+def genres():
+    url = "https://api.themoviedb.org/3/genre/movie/list?language=en"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
+    }
+
+    response = requests.get(url, headers=headers)
+
+    return response.json()
     
 
 def show(id):
