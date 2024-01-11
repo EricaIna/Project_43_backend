@@ -4,35 +4,40 @@ from .models import Movie, Genre
 import requests
 from .. import db
 
-def index_and_seed():
-    url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
+def index_and_seed(total_pages=10):
+    base_url = "https://api.themoviedb.org/3/movie/now_playing"
+    language = "en-US"
 
     headers = {
         "accept": "application/json",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE" 
     }
 
-    response = requests.get(url, headers=headers)
-    data = response.json()
-
     # Clear existing data in the movies table
     Movie.query.delete()
 
-    # Seed movies into the database
-    for movie_data in data.get('results', []):
-        movie = Movie(
-            original_title=movie_data.get('original_title'),
-            original_language=movie_data.get('original_language'),
-            overview=movie_data.get('overview'),
-            vote_average=movie_data.get('vote_average'),
-            release_date=movie_data.get('release_date'),
-        )
-        db.session.add(movie)
+    # Seed movies into the database from multiple pages
+    for page in range(1, total_pages + 1):
+        params = {"language": language, "page": page}
+        response = requests.get(base_url, headers=headers, params=params)
 
-    # Commit the changes to the database
+        if response.status_code == 200:
+            data = response.json()
+
+            for movie_data in data.get('results', []):
+                movie = Movie(
+                    original_title=movie_data.get('original_title'),
+                    original_language=movie_data.get('original_language'),
+                    overview=movie_data.get('overview'),
+                    vote_average=movie_data.get('vote_average'),
+                    release_date=movie_data.get('release_date'),
+                )
+                db.session.add(movie)
+
+    # Commit the changes to the database after all pages are processed
     db.session.commit()
 
-    return jsonify(data)
+    return jsonify({"message": f"Seeded {total_pages} pages of movies into the database"})
 
 
 def index():
