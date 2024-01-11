@@ -18,21 +18,14 @@ def index_and_seed():
     # Clear existing data in the movies table
     Movie.query.delete()
 
-    for movie_data in data.get('results', []):
-        director = movie_data.get('director')
-        if director is None:
-            director = ''  
-
     # Seed movies into the database
     for movie_data in data.get('results', []):
         movie = Movie(
             original_title=movie_data.get('original_title'),
-            genres=', '.join(genre['name'] for genre in movie_data.get('genres', [])),
             original_language=movie_data.get('original_language'),
             overview=movie_data.get('overview'),
             vote_average=movie_data.get('vote_average'),
             release_date=movie_data.get('release_date'),
-            director=director
         )
         db.session.add(movie)
 
