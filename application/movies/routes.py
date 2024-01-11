@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from werkzeug import exceptions
 from application import create_app # app from __init__.py
-from .controller import index, show, top_rated, upcoming
+from .controller import index, show, top_rated, upcoming, genres
 
 movies_blueprint = Blueprint('movies_blueprint', __name__)
 # app = create_app()
@@ -13,6 +13,10 @@ def handle_movies():
 @movies_blueprint.route('/movies/top', methods=["GET"])
 def handle_topMovies():    
     if request.method == "GET": return top_rated()
+
+@movies_blueprint.route('/genres', methods=["GET"])
+def handle_genres():    
+    if request.method == "GET": return genres()
 
 @movies_blueprint.route('/movies/upcoming', methods=["GET"])
 def handle_upcomingMovies():    
@@ -26,11 +30,9 @@ def handle_movie(id):
 def handle_404(err):
     return { "error": f"Oops {err}" }, 404
 
-
 @movies_blueprint.errorhandler(exceptions.InternalServerError)
 def handle_500(err):
     return { "error": f"Oops {err}" }, 500
-
 
 @movies_blueprint.errorhandler(exceptions.BadRequest)
 def handle_400(err):
