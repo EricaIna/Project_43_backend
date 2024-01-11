@@ -5,7 +5,8 @@ class UserFilmList(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id=db.Column(db.Integer)
-    movie_ids=db.Column(db.ARRAY(db.Integer))
+    # movie_ids=db.Column(db.ARRAY(db.Integer))
+    movie_ids=db.Column(db.String(2000))
     title = db.Column(db.String(500), nullable=False)
 
     def __init__(self, user_id,title,movie_ids):
