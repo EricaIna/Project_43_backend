@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_required, current_user
-from ..movies.models import Movie
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from .controllers import (
     create_review,
     get_reviews,
@@ -13,14 +12,14 @@ reviews_bp = Blueprint('reviews', __name__)
 
 # Create review
 @reviews_bp.route('/reviews', methods=['POST'])
-@login_required
+@jwt_required()
 def create_review_route():
     data = request.json
     movie_id = data.get('movie_id')
     title = data.get('title')
     content = data.get('content')
     rating = data.get('rating')
-    user_id = current_user.id
+    user_id = get_jwt_identity()
     result = create_review(movie_id, title, content, rating, user_id)
     return jsonify(result)
 
@@ -32,17 +31,17 @@ def get_reviews_route(movie_id):
 
 # Update reviews
 @reviews_bp.route('/reviews/<int:review_id>', methods=['PUT'])
-@login_required
+@jwt_required()
 def update_review_route(review_id):
     new_data = request.json
-    user_id = current_user.id
+    user_id = get_jwt_identity()
     result = update_review(review_id, user_id, new_data)
     return jsonify(result)
 
 # Delete review
 @reviews_bp.route('/reviews/<int:review_id>', methods=['DELETE'])
-@login_required
+@jwt_required()
 def delete_review_route(review_id):
-    user_id = current_user.id
+    user_id = get_jwt_identity()
     result = delete_review(review_id, user_id)
     return jsonify(result)
