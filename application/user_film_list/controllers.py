@@ -1,60 +1,63 @@
 from flask import jsonify, request
+from flask_jwt_extended import get_jwt_identity
 from werkzeug import exceptions
 from .models import UserFilmList
 from .. import db
 from ..movies.models import Movie
 
 
-
 def index():
-    movies = UserFilmList.query.all()
     try:
+        movies = UserFilmList.query.filter_by(user_id=get_jwt_identity())
         return jsonify({ "data": [c.json for c in movies] }), 200
-    except:
+    except Exception as e:
+        print(e)
         raise exceptions.InternalServerError(f"We are working on it")
 
 def show(id):
-    print("id", type(id))
-    movie = UserFilmList.query.filter_by(id=id).first()
+    movie_list = UserFilmList.query.filter_by(id=id).first()
     try:
-        return jsonify({ "data": movie.json }), 200
+        return jsonify({ "data": movie_list.json }), 200
     except:
         raise exceptions.NotFound(f"You get it")
 
 
 def create():
     try:
-        user_id,title = request.json.values()
-        print("Enter in create function")
-
-        new_movie_list = UserFilmList(user_id,title)
+        title = request.json.get("title", None)
+        new_movie_list = UserFilmList(get_jwt_identity(),title,[])
         
         db.session.add(new_movie_list)
         db.session.commit()
 
         return jsonify({ "data": new_movie_list.json }), 201
-    except:
+    except Exception as e:
+        print(e)
         raise exceptions.BadRequest(f"We cannot process your request")
-
 
 
 def update(id):
     data = request.json
-    movie_list = UserFilmList.query.filter_by(id=id).first()
+    movie_list = UserFilmList.query.filter_by(id=id, user_id=get_jwt_identity()).first()
+    if movie_list is None:
+        return jsonify({"message": "Movie list is not found"}), 404
 
     for (attribute, value) in data.items():
         if hasattr(movie_list, attribute):
             setattr(movie_list, attribute, value)
 
     db.session.commit()
-    return jsonify({ "data": movie_list.json })
+    return jsonify({ "data": movie_list.json }), 201
 
 
 def destroy(id):
-    movie_list = UserFilmList.query.filter_by(id=id).first()
+    movie_list = UserFilmList.query.filter_by(id=id, user_id=get_jwt_identity()).first()
+    if movie_list is None:
+        return jsonify({"message": "Movie list is not found"}), 404
+
     db.session.delete(movie_list)
     db.session.commit()
-    return "movie list Deleted", 204
+    return jsonify({"message": "Movie list Deleted"}), 204
 
 
 def recommend(id):
@@ -72,23 +75,18 @@ def show_movie_details(id,movie_id):
 
 
 def add_movie(id,movie_id):
-    print("Enter in add_movie function")
-    print("ID",type(id)) 
-    # user_film_instance = UserFilmList.query.get(id)
-    user_film_instance = UserFilmList.query.filter_by(id=id).first()
-    
-    # user_film_instance=db.session.query(UserFilmList).get(1)
-    print("user_film_instance=",user_film_instance) 
+    movie_list = UserFilmList.query.filter_by(id=id, user_id=get_jwt_identity()).first()
+    if movie_list is None:
+        return jsonify({"message": "Movie list is not found"}), 404
 
-    
+    print("before movie_list.movie_ids=", movie_list.movie_ids)
+    movie_list.movie_ids.append(movie_id)
+    print("after movie_list.movie_ids=", movie_list.movie_ids)
 
-    if user_film_instance:
-        print("user_film_instance.movie_ids",user_film_instance.movie_ids)
-        user_film_instance.movie_ids.append(movie_id)
-        db.session.commit()
-        return jsonify({"message": "Movie added successfully"}), 200
-    else:
-        return jsonify({"message": "UserFilmList not found"}), 404
+    db.session.add(movie_list)
+
+    db.session.commit()
+    return jsonify({"message": "Movie added successfully"}), 200
 
 
 def remove_movie(id,movie_id):
