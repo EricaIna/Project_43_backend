@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from werkzeug import exceptions
 from application import create_app # app from __init__.py
-from .controller import index, show
+from .controller import index, show, top_rated, upcoming
 
 movies_blueprint = Blueprint('movies_blueprint', __name__)
 # app = create_app()
@@ -10,10 +10,17 @@ movies_blueprint = Blueprint('movies_blueprint', __name__)
 def handle_movies():    
     if request.method == "GET": return index()
 
+@movies_blueprint.route('/movies/top', methods=["GET"])
+def handle_topMovies():    
+    if request.method == "GET": return top_rated()
+
+@movies_blueprint.route('/movies/upcoming', methods=["GET"])
+def handle_upcomingMovies():    
+    if request.method == "GET": return upcoming()
+
 @movies_blueprint.route('/movies/<int:id>', methods=["GET"])
 def handle_movie(id):
     if request.method == "GET": return show(id)
-
 
 @movies_blueprint.errorhandler(exceptions.NotFound)
 def handle_404(err):
