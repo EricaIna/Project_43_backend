@@ -4,6 +4,44 @@ from .models import Movie
 import requests
 from .. import db
 
+def index_and_seed():
+    url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE" 
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    # Clear existing data in the movies table
+    Movie.query.delete()
+
+    for movie_data in data.get('results', []):
+        director = movie_data.get('director')
+        if director is None:
+            director = ''  
+
+    # Seed movies into the database
+    for movie_data in data.get('results', []):
+        movie = Movie(
+            original_title=movie_data.get('original_title'),
+            genres=', '.join(genre['name'] for genre in movie_data.get('genres', [])),
+            original_language=movie_data.get('original_language'),
+            overview=movie_data.get('overview'),
+            vote_average=movie_data.get('vote_average'),
+            release_date=movie_data.get('release_date'),
+            director=director
+        )
+        db.session.add(movie)
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    return jsonify(data)
+
+
 
 def index():
     url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"

@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import text
 from application import db,create_app
 from application.auth.models import User
-
+from application.movies.controller import index_and_seed
 from application.reviews.models import Reviews
 from application.user_film_list.models import UserFilmList
 
@@ -13,23 +13,35 @@ print("Dropping Database")
 
 result = db.session.execute(text('DROP TABLE IF EXISTS movies;'))
 db.session.commit()
-print("saving movies")
 
-df = pd.read_csv("./movie_dataset.csv")
-df.to_sql(name='movies', con=db.engine)
-print("movies dataset saved")
+# print("saving movies")
+
+# df = pd.read_csv("./movie_dataset.csv")
+# df.to_sql(name='movies', con=db.engine)
+# print("movies dataset saved")
+# >>>>>>> staging
 
 db.create_all()
 print("Creating database")
 
+print("Saving movies")
+index_and_seed()
+
+user_data = [
+    {"email": "test@test.com", "password": "test", "name": "test"},
+    {"email": "test2@test.com", "password": "test2", "name": "test2"}
+]
+
+for user_info in user_data:
+    user = User(**user_info)
+    db.session.add(user)
 
 # Seed reviews data
 print("Saving reviews")
 # Manually create some review records and insert them into the 'reviews' table
 reviews_data = [
-    {"Title": "Great Movie", "Content": "I loved it!", "Rating": 5, "user_id": 1, "movie_id": 1},
-    {"Title": "Average Movie", "Content": "It was okay", "Rating": 3, "user_id": 2, "movie_id": 2},
-    # Add more review records as needed
+    {"title": "Great Movie", "content": "I loved it!", "rating": 5, "user_id": 1, "movies_id": 1},
+    {"title": "Average Movie", "content": "It was okay", "rating": 3, "user_id": 2, "movies_id": 2},
 ]
 
 for review_info in reviews_data:
