@@ -1,6 +1,6 @@
 from flask import jsonify
 from werkzeug import exceptions
-from .models import Movie
+from .models import Movie, Genre
 import requests
 from .. import db
 
@@ -33,7 +33,6 @@ def index_and_seed():
     db.session.commit()
 
     return jsonify(data)
-
 
 
 def index():
@@ -82,7 +81,22 @@ def genres():
 
     response = requests.get(url, headers=headers)
 
-    return response.json()    
+    data = response.json()
+
+    # Clear existing data in the movies table
+    Genre.query.delete()
+
+    # Seed movies into the database
+    for genre_data in data.get('results', []):
+        genre = Movie(
+            name=genre_data.get('original_title')
+        )
+        db.session.add(genre)
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    return jsonify(data)  
 
 def show(id):
     base_url = "https://api.themoviedb.org/3/movie/{id}?language=en-US"
