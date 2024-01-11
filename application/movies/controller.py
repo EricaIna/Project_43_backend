@@ -31,7 +31,10 @@ def index_and_seed(total_pages=10):
                     overview=movie_data.get('overview'),
                     vote_average=movie_data.get('vote_average'),
                     release_date=movie_data.get('release_date'),
+                    poster_path=movie_data.get('poster_path')
                 )
+
+                movie.poster_path = movie.poster_url
                 db.session.add(movie)
 
     # Commit the changes to the database after all pages are processed
@@ -41,17 +44,24 @@ def index_and_seed(total_pages=10):
 
 
 
+# def index():
+#     url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
+
+#     headers = {
+#         "accept": "application/json",
+#         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
+#     }
+
+#     response = requests.get(url, headers=headers)
+
+#     return response.json()
+
 def index():
-    url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
+    movies = Movie.query.all()
 
-    headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
-    }
+    movies_list = [movie.json for movie in movies]
 
-    response = requests.get(url, headers=headers)
-
-    return response.json()
+    return jsonify(movies_list)
 
 def top_rated():
     url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
