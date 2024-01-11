@@ -49,4 +49,4 @@ def handle_400(err):
 @movies_list.route('/search-and-add', methods=['POST'])
 @jwt_required()
 def handle_search_and_add():
-    return search_and_add()
+    return search_and_add() 

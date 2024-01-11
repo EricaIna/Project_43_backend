@@ -21,7 +21,7 @@ def show(id):
     except:
         raise exceptions.NotFound(f"You get it")
 
-
+ 
 def create():
     try:
         title = request.json.get("title", None)

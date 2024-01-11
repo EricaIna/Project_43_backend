@@ -19,3 +19,4 @@ class UserFilmList(db.Model):
     @property
     def json(self):
          return {"id": self.id, "user_id": self.user_id, "movie_ids": self.movie_ids, "title": self.title}
+ 

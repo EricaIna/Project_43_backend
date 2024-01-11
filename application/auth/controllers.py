@@ -5,7 +5,7 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
     unset_jwt_cookies
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-from .models import User
+from .models import User 
 
 def refresh_expiring_jwts(response):
     try:
