@@ -11,7 +11,6 @@ class Movie(db.Model):
 
 
     def __init__(self, original_title, original_language, overview, vote_average, release_date): # constructor
-
         self.original_language = original_language
         self.original_title = original_title
         self.overview = overview

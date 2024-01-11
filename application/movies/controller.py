@@ -51,8 +51,7 @@ def genres():
 
     response = requests.get(url, headers=headers)
 
-    return response.json()
-    
+    return response.json()    
 
 def show(id):
     base_url = "https://api.themoviedb.org/3/movie/{id}?language=en-US"
