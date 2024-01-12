@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import g
-from .. import db
+# from .. import db
 
 def get_model():
     if 'model' not in g:
@@ -11,10 +11,10 @@ def get_model():
     return g.model
 
 #make data frame availible to the flask app
-def get_df():
-    if 'df' not in g:
-        g.df = pd.read_sql(sql='movies', con=db.engine)
-    return g.df
+# def get_df():
+#     if 'df' not in g:
+#         g.df = pd.read_sql(sql='movies', con=db.engine)
+#     return g.df
 
 def get_title_from_index(index):
     return df[df.index == index]["title"].values[0]
@@ -26,7 +26,8 @@ def get_index_from_title(title):
 
 def train_model():
     # df = pd.read_sql(sql='movies', con=db.engine)
-    df=get_df()
+    # df=get_df()
+    df = pd.read_csv("movie_dataset.csv")
     features = ['keywords', 'cast', 'genres', 'director']
 
     def combine_features(row):
@@ -38,16 +39,28 @@ def train_model():
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(df["combined_features"])
     cosine_sim = cosine_similarity(count_matrix)
+    print("train model")
     return cosine_sim
 
 
 def recommend_movie(movie_ids):
+    #doing the list from movie_ids
+    list_of_movie_ids=movie_ids.split(";")
+    list_of_movie_ids = [int(movie_id) for movie_id in list_of_movie_ids] #make the list integer
     #movie_index = get_index_from_title(movie_ids[0])
-    similar_movies = list(enumerate(get_model()[movie_ids[0]])) #need to iterate over movie_ids instead
-
-    sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
-
-    return sorted_similar_movies[0]
+    cosine_sim=train_model() #delete this line
+    list_of_the_best_movie=[]
+    for movie_id in list_of_movie_ids:
+        # similar_movies = list(enumerate(get_model()[movie_id])) #need to iterate over movie_ids instead
+        similar_movies = list(enumerate(cosine_sim[movie_id]))
+        sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+        list_of_the_best_movie.append(sorted_similar_movies[0])
+        
+        
+    # sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)[1:]
+    # print(sorted_similar_movies)
+    # return sorted_similar_movies[0]
+    return list_of_the_best_movie
 
     #i = 0
     #print("Top 5 similar movies to " + movie_user_likes + " are:\n")
@@ -56,3 +69,9 @@ def recommend_movie(movie_ids):
     #    i = i + 1
     #    if i >= 5:
     #        break
+
+# cos_sim=train_model()
+# print(len(cos_sim))
+movie_ids_like="7;8;9"
+# print(recommend_movie(movie_ids_like))
+recommend_movie(movie_ids_like)
