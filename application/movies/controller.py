@@ -1,6 +1,6 @@
 from flask import jsonify
 from werkzeug import exceptions
-from .models import Movie
+from .models import Movie, Genre
 import requests
 from .. import db
 
@@ -32,6 +32,7 @@ def index_and_seed(total_pages=10):
                     vote_average=movie_data.get('vote_average'),
                     release_date=movie_data.get('release_date'),
                     poster_path=movie_data.get('poster_path')
+                    # genres_id=movie_data.get('genres_id')
                 )
 
                 movie.poster_path = movie.poster_url
@@ -41,20 +42,6 @@ def index_and_seed(total_pages=10):
     db.session.commit()
 
     return jsonify({"message": f"Seeded {total_pages} pages of movies into the database"})
-
-
-
-# def index():
-#     url = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
-
-#     headers = {
-#         "accept": "application/json",
-#         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
-#     }
-
-#     response = requests.get(url, headers=headers)
-
-#     return response.json()
 
 def index():
     movies = Movie.query.all()
@@ -88,6 +75,13 @@ def upcoming():
     return response.json()
 
 def genres():
+    genres = Genre.query.all()
+
+    genres_list = [genre.json for genre in genres]
+
+    return jsonify(genres_list)
+
+def genres_and_seed():
     url = "https://api.themoviedb.org/3/genre/movie/list?language=en"
 
     headers = {
@@ -95,9 +89,22 @@ def genres():
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
     }
 
+    Genre.query.delete()
+
     response = requests.get(url, headers=headers)
 
-    return response.json()
+    if response.status_code == 200:
+        data = response.json()
+
+        for genre_data in data.get('results', []):
+            genre = Genre(
+                name=genre_data.get('name')
+            )
+            db.session.add(genre)
+    
+    db.session.commit()
+
+    return jsonify({"message": "Success"})
     
 
 def show(id):
