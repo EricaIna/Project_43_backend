@@ -43,12 +43,26 @@ def index_and_seed(total_pages=10):
 
     return jsonify({"message": f"Seeded {total_pages} pages of movies into the database"})
 
+
+
+
 def index():
     movies = Movie.query.all()
 
     movies_list = [movie.json for movie in movies]
 
     return jsonify(movies_list)
+
+
+def show(id):
+    
+    movie = Movie.query.get(id)
+
+    if movie is None:
+        raise exceptions.NotFound("Movie not found")
+
+    return jsonify(movie.json)
+
 
 def top_rated():
     url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
@@ -107,16 +121,6 @@ def genres_and_seed():
     return jsonify({"message": "Success"})
     
 
-def show(id):
-    base_url = "https://api.themoviedb.org/3/movie/{id}?language=en-US"
 
-    headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
-    }
 
-    url = base_url.format(id=id)
 
-    response = requests.get(url, headers=headers)
-
-    return response.json()

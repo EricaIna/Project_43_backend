@@ -4,7 +4,7 @@ from application import db,create_app
 from application.auth.models import User
 from application.movies.controller import index_and_seed, genres_and_seed
 from application.reviews.models import Reviews
-from application.user_film_list.models import UserFilmList
+from application.user_films_list.models import UserFilmList
 
 
 app = create_app("PROD")
@@ -13,11 +13,8 @@ print("Dropping Database")
 
 result = db.session.execute(text('DROP TABLE IF EXISTS movies;'))
 db.session.commit()
-# print("saving movies")
 
-# df = pd.read_csv("./movie_dataset.csv")
-# df.to_sql(name='movies', con=db.engine)
-# print("movies dataset saved")
+
 
 db.create_all()
 print("Creating database")
@@ -27,6 +24,17 @@ index_and_seed()
 
 print("Saving genres")
 genres_and_seed()
+
+user_list_data = [
+    {"user_id": 1, "movies_id": 2},
+    {"user_id": 2, "movies_id": 199}
+]
+
+for list_info in user_list_data:
+    list = UserFilmList(**list_info)
+    db.session.add(list)
+
+
 
 user_data = [
     {"email": "test@test.com", "password": "test", "name": "test"},

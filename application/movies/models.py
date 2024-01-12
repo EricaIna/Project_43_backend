@@ -8,9 +8,7 @@ class Movie(db.Model):
     overview = db.Column(db.String(1000), nullable=False)
     vote_average = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
-    poster_path = db.Column(db.String(200), nullable=False)
-    # genres_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
-
+    poster_path = db.Column(db.String(200), nullable=True)
 
 
     def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path): # constructor
