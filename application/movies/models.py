@@ -37,7 +37,8 @@ class Movie(db.Model):
             "original_language": self.original_language,
             "overview": self.overview,
             "vote_average": self.vote_average,
-            "release_date": self.release_date
+            "release_date": self.release_date,
+            "poster_path": self.poster_path
             # "genres": self.genres_id
         }
 
