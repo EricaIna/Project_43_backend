@@ -103,14 +103,13 @@ def genres_and_seed():
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWRlYzM5ZWEzOTk3ZWRlNzJkOGJmYmE3ODliNmNhMSIsInN1YiI6IjY1OWZjMTI2NTI5NGU3MDEyYmM1OTRhMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.-BESHu0oI5-ndoVrFpgPq3FUd5Hs1cVyu7JLugdsHzE"
     }
 
-    Genre.query.delete()
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         data = response.json()
 
-        for genre_data in data.get('results', []):
+        for genre_data in data.get('genres', []):
             genre = Genre(
                 name=genre_data.get('name')
             )
@@ -119,6 +118,8 @@ def genres_and_seed():
     db.session.commit()
 
     return jsonify({"message": "Success"})
+
+
     
 
 
