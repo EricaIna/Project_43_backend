@@ -12,7 +12,8 @@ def hello():
             "GET /movies",
             "GET /movies/<int:id>",
             "GET /movies/top",
-            "GET /movies/upcoming"
+            "GET /movies/recent",
+            "GET /genres"
         ]
     }), 200
 

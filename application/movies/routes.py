@@ -18,7 +18,7 @@ def handle_topMovies():
 def handle_genres():    
     if request.method == "GET": return genres()
 
-@movies_blueprint.route('/movies/upcoming', methods=["GET"])
+@movies_blueprint.route('/movies/recent', methods=["GET"])
 def handle_upcomingMovies():    
     if request.method == "GET": return upcoming()
 

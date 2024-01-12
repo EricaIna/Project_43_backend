@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import text
 from application import db,create_app
 from application.auth.models import User
-from application.movies.controller import index_and_seed
+from application.movies.controller import index_and_seed, genres_and_seed
 from application.reviews.models import Reviews
 from application.user_films_list.models import UserFilmList
 
@@ -22,6 +22,9 @@ print("Creating database")
 print("Saving movies")
 index_and_seed()
 
+print("Saving genres")
+genres_and_seed()
+
 user_list_data = [
     {"user_id": 1, "movies_id": 2},
     {"user_id": 2, "movies_id": 199}
@@ -30,6 +33,7 @@ user_list_data = [
 for list_info in user_list_data:
     list = UserFilmList(**list_info)
     db.session.add(list)
+
 
 
 user_data = [
