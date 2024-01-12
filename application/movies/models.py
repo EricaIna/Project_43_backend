@@ -9,16 +9,17 @@ class Movie(db.Model):
     vote_average = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     poster_path = db.Column(db.String(200), nullable=True)
+    genres_id = db.Column(db.Integer, db.ForeignKey('genres.api_id'))
 
 
-    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path): # constructor
+    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path, genres_id): # constructor
         self.original_language = original_language
         self.original_title = original_title
         self.overview = overview
         self.vote_average = vote_average
         self.release_date = release_date
         self.poster_path = poster_path
-        # self.genres_id = genres_id
+        self.genres_id = genres_id
 
 
     def __repr__(self):
@@ -38,28 +39,31 @@ class Movie(db.Model):
             "overview": self.overview,
             "vote_average": self.vote_average,
             "release_date": self.release_date,
-            "poster_path": self.poster_path
-            # "genres": self.genres_id
+            "poster_path": self.poster_path,
+            "genres_id": self.genres_id
         }
 
 
 class Genre(db.Model):
     __tablename__ = "genres"
     id = db.Column(db.Integer, primary_key=True)
+    api_id = db.Column(db.Integer, unique=True, nullable=True)
     name = db.Column(db.String(200), nullable=False)
 
 
-    def __init__(self, name): # constructor
+    def __init__(self, api_id, name): # constructor
+        self.api_id = api_id
         self.name = name       
 
 
     def __repr__(self):
-        return f"Genre(id:  {self.id}, name: {self.name})"
+        return f"Genre(id:  {self.id}, api_id: {self.api_id}, name: {self.name})"
 
     @property
     def json(self): # create a json from of an instance
         return {
             "id": self.id,
+            "api_id": self.api_id,
             "name": self.name
         }
     
