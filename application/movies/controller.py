@@ -111,6 +111,7 @@ def genres_and_seed():
 
         for genre_data in data.get('genres', []):
             genre = Genre(
+                api_id=genre_data.get('id'),
                 name=genre_data.get('name')
             )
             db.session.add(genre)
