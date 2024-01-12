@@ -34,8 +34,8 @@ def create_app(env=None):
     from application.movies.routes import movies_blueprint as movies_blueprint
     app.register_blueprint(movies_blueprint)
 
-    from application.user_film_list.routes import movies_list
-    app.register_blueprint(movies_list)
+    from application.user_films_list.routes import user_film_list_blueprint
+    app.register_blueprint(user_film_list_blueprint)
 
     from application.reviews.routes import reviews_bp
     app.register_blueprint(reviews_bp)
