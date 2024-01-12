@@ -31,8 +31,8 @@ def index_and_seed(total_pages=10):
                     overview=movie_data.get('overview'),
                     vote_average=movie_data.get('vote_average'),
                     release_date=movie_data.get('release_date'),
-                    poster_path=movie_data.get('poster_path')
-                    # genres_id=movie_data.get('genres_id')
+                    poster_path=movie_data.get('poster_path'),
+                    genres_id=movie_data.get('genres_id')
                 )
 
                 movie.poster_path = movie.poster_url

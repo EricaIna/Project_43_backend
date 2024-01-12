@@ -9,16 +9,17 @@ class Movie(db.Model):
     vote_average = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     poster_path = db.Column(db.String(200), nullable=True)
+    genres_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
 
 
-    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path): # constructor
+    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path, genres_id): # constructor
         self.original_language = original_language
         self.original_title = original_title
         self.overview = overview
         self.vote_average = vote_average
         self.release_date = release_date
         self.poster_path = poster_path
-        # self.genres_id = genres_id
+        self.genres_id = genres_id
 
 
     def __repr__(self):
@@ -38,8 +39,8 @@ class Movie(db.Model):
             "overview": self.overview,
             "vote_average": self.vote_average,
             "release_date": self.release_date,
-            "poster_path": self.poster_path
-            # "genres": self.genres_id
+            "poster_path": self.poster_path,
+            "genres": self.genres_id
         }
 
 
@@ -63,4 +64,4 @@ class Genre(db.Model):
             "name": self.name
         }
     
-    db.ForeignKeyConstraint(['genres_id'], ['genres.id'])
+db.ForeignKeyConstraint(['genres_id'], ['genres.id'])
