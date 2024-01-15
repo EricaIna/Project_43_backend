@@ -13,14 +13,15 @@ def create_app(env=None):
     app = Flask(__name__)
     app.json_provider_class.sort_keys = False
     CORS(app)
-    print("SQLALCHEMY_DATABASE_URI")
+    
+   
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["SQLALCHEMY_DATABASE_URI"]
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
     app.config["JWT_SECRET_KEY"] = os.environ["JWT_SECRET_KEY"]
 
     db.init_app(app)
-    print(os.environ["SQLALCHEMY_DATABASE_URI"])
+    
     app.app_context().push()
 
 
@@ -33,6 +34,9 @@ def create_app(env=None):
 
     from application.movies.routes import movies_blueprint as movies_blueprint
     app.register_blueprint(movies_blueprint)
+
+    from application.recommendations_list.routes import recommendations_blueprint
+    app.register_blueprint(recommendations_blueprint)
 
     from application.user_films_list.routes import user_film_list_blueprint
     app.register_blueprint(user_film_list_blueprint)
