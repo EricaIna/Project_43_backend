@@ -1,4 +1,13 @@
 from .. import db
+from sqlalchemy import Table, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+
+movie_genre_association = Table(
+    'movie_genre_association',
+    db.Model.metadata,
+    Column('movie_id', Integer, ForeignKey('movies.id')),
+    Column('genre_id', Integer, ForeignKey('genres.api_id'))
+)
 
 class Movie(db.Model):
     __tablename__ = "movies"
@@ -9,17 +18,18 @@ class Movie(db.Model):
     vote_average = db.Column(db.Float, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     poster_path = db.Column(db.String(200), nullable=True)
-    genres_id = db.Column(db.Integer, db.ForeignKey('genres.api_id'))
+    # Define the many-to-many relationship
+    genres = db.relationship('Genre', secondary=movie_genre_association, back_populates='movies')
 
 
-    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path, genres_id): # constructor
+    def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path, genres): # constructor
         self.original_language = original_language
         self.original_title = original_title
         self.overview = overview
         self.vote_average = vote_average
         self.release_date = release_date
         self.poster_path = poster_path
-        self.genres_id = genres_id
+        self.genres = genres
 
 
     def __repr__(self):
@@ -39,9 +49,10 @@ class Movie(db.Model):
             "overview": self.overview,
             "vote_average": self.vote_average,
             "release_date": self.release_date,
-            "poster_path": self.poster_path
-            # "genres": self.genres_id
+            "poster_path": self.poster_path,
+            "genres": self.genres
         }
+
 
 
 class Genre(db.Model):
@@ -49,11 +60,14 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     api_id = db.Column(db.Integer, unique=True, nullable=True)
     name = db.Column(db.String(200), nullable=False)
+    # Define the many-to-many relationship
+    movies = db.relationship('Movie', secondary=movie_genre_association, back_populates='genres')
 
 
-    def __init__(self, api_id, name): # constructor
+    def __init__(self, api_id, name, movies): # constructor
         self.api_id = api_id
-        self.name = name       
+        self.name = name  
+        self.movies = movies     
 
 
     def __repr__(self):
@@ -67,4 +81,4 @@ class Genre(db.Model):
             "name": self.name
         }
     
-db.ForeignKeyConstraint(['genres_id'], ['genres.id'])
+# db.ForeignKeyConstraint(['genres_id'], ['genres.api_id'])
