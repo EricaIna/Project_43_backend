@@ -19,7 +19,7 @@ class Movie(db.Model):
     release_date = db.Column(db.Date, nullable=False)
     poster_path = db.Column(db.String(200), nullable=True)
     # Define the many-to-many relationship
-    genres = db.relationship('Genre', secondary=movie_genre_association, back_populates='movies')
+    genres = db.relationship('Genre', secondary=movie_genre_association, back_populates='movies', uselist=True)
 
 
     def __init__(self, original_title, original_language, overview, vote_average, release_date, poster_path, genres): # constructor
