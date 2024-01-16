@@ -34,7 +34,7 @@ def show(id):
         list_of_movie_ids = movie_list.movie_ids.split(";")
 
         return jsonify({"title": movie_list.title,
-                        "movies": [get_movie_title(int(movie_id)) for movie_id in list_of_movie_ids[:-1]]}), 200
+                        "movies": [get_movie_title(int(movie_id)) for movie_id in list_of_movie_ids[:-1]], "movies_id":list_of_movie_ids[:-1]}), 200
     except Exception as e:
         print(e)
         raise exceptions.NotFound(f"You get it")
