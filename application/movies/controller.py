@@ -32,7 +32,7 @@ def index_and_seed(total_pages=10):
                     vote_average=movie_data.get('vote_average'),
                     release_date=movie_data.get('release_date'),
                     poster_path=movie_data.get('poster_path'),
-                    genres=movie_data.get('genres')
+                    genre_ids=movie_data.get('genre_ids')
                 )
 
                 movie.poster_path = movie.poster_url
@@ -49,7 +49,7 @@ def index_and_seed(total_pages=10):
 def index():
     movies = Movie.query.all()
 
-    movies_list = [movie.json for movie in movies]
+    movies_list = [movie.json for movie in movies[:5]]
 
     return jsonify(movies_list)
 
@@ -111,7 +111,7 @@ def genres_and_seed():
 
         for genre_data in data.get('genres', []):
             genre = Genre(
-                api_id=genre_data.get('id'),
+                id=genre_data.get('id'),
                 name=genre_data.get('name')
             )
             db.session.add(genre)
@@ -119,10 +119,3 @@ def genres_and_seed():
     db.session.commit()
 
     return jsonify({"message": "Success"})
-
-
-    
-
-
-
-

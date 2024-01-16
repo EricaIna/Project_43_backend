@@ -8,11 +8,11 @@ from application.user_films_list.models import UserFilmList
 
 
 app = create_app("PROD")
-# db.drop_all()
-db.session.execute(text('DROP TABLE IF EXISTS genres;'))
-db.session.execute(text('DROP TABLE IF EXISTS user_film_lists;'))
-db.session.execute(text('DROP TABLE IF EXISTS reviews;'))
-db.session.execute(text('DROP TABLE IF EXISTS movies;'))
+db.drop_all()
+# db.session.execute(text('DROP TABLE genres CASCADE;'))
+# db.session.execute(text('DROP TABLE user_film_lists CASCADE;'))
+# db.session.execute(text('DROP TABLE reviews CASCADE;'))
+# db.session.execute(text('DROP TABLE movies CASCADE;'))
 
 print("Dropping Database")
 
