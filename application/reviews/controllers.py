@@ -2,26 +2,27 @@ from .. import db
 from .models import Reviews
 from ..movies.models import Movie
 
-def create_review(movie_id, title, content, rating, user_id):
-    movie = Movie.query.get(movie_id)
+
+def create_review(movies_id, title, content, rating, user_id):
+    movie = Movie.query.get(movies_id)
     if not movie:
         return {'message': 'Movie not found'}, 404
     review = Reviews(
-        Title=title,
-        Content=content,
-        Rating=rating,
+        title=title,
+        content=content,
+        rating=rating,
         user_id=user_id,
-        movie_id=movie_id
+        movies_id=movies_id
     ) 
     db.session.add(review)
     db.session.commit()
     return {'message': 'Review created successfully'}, 201
 
-def get_reviews(movie_id):
-    movie = Movie.query.get(movie_id)
+def get_reviews(movies_id):
+    movie = Movie.query.get(movies_id)
     if not movie:
         return {'message': 'Movie not found'}, 404
-    reviews = Reviews.query.filter_by(movie_id=movie_id).all()
+    reviews = Reviews.query.filter_by(movies_id=movies_id).all()
     return {'reviews': [r.serialize() for r in reviews]}
 
 def update_review(review_id, user_id, new_data):
