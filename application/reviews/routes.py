@@ -15,18 +15,18 @@ reviews_bp = Blueprint('reviews', __name__)
 @jwt_required()
 def create_review_route():
     data = request.json
-    movie_id = data.get('movie_id')
+    movies_id = data.get('movies_id')
     title = data.get('title')
     content = data.get('content')
     rating = data.get('rating')
     user_id = get_jwt_identity()
-    result = create_review(movie_id, title, content, rating, user_id)
+    result = create_review(movies_id, title, content, rating, user_id)
     return jsonify(result)
 
 # Get reviews
-@reviews_bp.route('/reviews/<int:movie_id>', methods=['GET'])
-def get_reviews_route(movie_id):
-    result = get_reviews(movie_id)
+@reviews_bp.route('/reviews/<int:movies_id>', methods=['GET'])
+def get_reviews_route(movies_id):
+    result = get_reviews(movies_id)
     return jsonify(result)
 
 # Update reviews
