@@ -1,7 +1,7 @@
 from application.auth.models import User
 
 def test_new_user():
-    user = User('Test', 'test@test.com', 'jkljkl')
+    user = User(name='Test', email='test@test.com', password='jkljkl')
     
     assert user.name == 'Test'
     assert user.email == 'test@test.com'
