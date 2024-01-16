@@ -60,4 +60,6 @@ def recommend_movie(movie_ids):
                 break
 
     #Remove from dictionary_of_similar_movies all entries with keys from list_of_movie_ids
+    dictionary_of_similar_movies = {key: value for key, value in dictionary_of_similar_movies.items() if key not in list_of_movie_ids}
+
     return max(dictionary_of_similar_movies, key=dictionary_of_similar_movies.get)
