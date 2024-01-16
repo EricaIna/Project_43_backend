@@ -9,9 +9,15 @@ from application.user_films_list.models import UserFilmList
 
 app = create_app("PROD")
 db.drop_all()
+# db.session.execute(text('DROP TABLE IF EXISTS genres;'))
+# db.session.execute(text('DROP TABLE IF EXISTS user_film_lists;'))
+# db.session.execute(text('DROP TABLE IF EXISTS reviews;'))
+# db.session.execute(text('DROP TABLE IF EXISTS movies;'))
+
 print("Dropping Database")
 
 result = db.session.execute(text('DROP TABLE IF EXISTS movies_dataset;'))
+
 db.session.commit()
 
 

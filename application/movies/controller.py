@@ -3,6 +3,7 @@ from werkzeug import exceptions
 from .models import Movie, Genre
 import requests
 from .. import db
+import random
 
 def index_and_seed(total_pages=10):
     base_url = "https://api.themoviedb.org/3/movie/now_playing"
@@ -32,7 +33,7 @@ def index_and_seed(total_pages=10):
                     vote_average=movie_data.get('vote_average'),
                     release_date=movie_data.get('release_date'),
                     poster_path=movie_data.get('poster_path'),
-                    genres_id=movie_data.get('genres_id')
+                    genre_ids=movie_data.get('genre_ids'),
                 )
 
                 movie.poster_path = movie.poster_url
@@ -62,6 +63,25 @@ def show(id):
         raise exceptions.NotFound("Movie not found")
 
     return jsonify(movie.json)
+
+
+# def get_random_movie_by_genre(genre_id):
+#     try:
+#         genre = Genre.query.get(genre_id)
+#         if genre is None:
+#             raise exceptions.NotFound("Genre not found")
+
+#         movies_in_genre = genre.movies  # Remove the parentheses here
+
+#         if not movies_in_genre:
+#             raise exceptions.NotFound(f"No movies found for the specified genre (ID: {genre_id})")
+
+#         random_movie = random.choice(movies_in_genre)
+
+#         return jsonify(random_movie.json)
+
+#     except Exception as e:
+#         return {"error": str(e)}, 500
 
 
 def top_rated():
@@ -111,7 +131,7 @@ def genres_and_seed():
 
         for genre_data in data.get('genres', []):
             genre = Genre(
-                api_id=genre_data.get('id'),
+                id=genre_data.get('id'),
                 name=genre_data.get('name')
             )
             db.session.add(genre)
@@ -122,7 +142,5 @@ def genres_and_seed():
 
 
     
-
-
 
 
