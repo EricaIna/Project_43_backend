@@ -33,6 +33,6 @@ def remove_from_user_list():
 def get_user_film_list():
     user_id = get_jwt_identity()
     user_film_list = UserFilmList.query.filter_by(user_id=user_id).all()
-    movies = [Movie.query.get(item.movie_id).json for item in user_film_list]
+    movies = [Movie.query.get(item.movies_id).json for item in user_film_list]
     return jsonify(movies)
 

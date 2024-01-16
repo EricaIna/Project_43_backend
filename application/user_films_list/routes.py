@@ -20,10 +20,9 @@ def handle_remove_from_user_list():
         movie_id = data.get('movie_id')
         return remove_from_user_list(user_id, movie_id)
 
-@user_film_list_blueprint.route('/user-film-list/<int:user_id>', methods=["GET"])
-def handle_get_user_film_list(user_id):
-    if request.method == "GET":
-        return get_user_film_list(user_id)
+@user_film_list_blueprint.route('/user-film-list', methods=["GET"])
+def handle_get_user_film_list():
+        return get_user_film_list()
 
 @user_film_list_blueprint.errorhandler(exceptions.NotFound)
 def handle_404(err):
