@@ -7,9 +7,10 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 @jwt_required()
 def add_to_user_list():
     user_id = get_jwt_identity()
+    print(user_id)
     data = request.json
-    movie_id = data.get('movie_id')
-    user_film_list = UserFilmList(user_id=user_id, movie_id=movie_id)
+    movies_id = data.get('movies_id')
+    user_film_list = UserFilmList(user_id=user_id, movies_id=movies_id)
     db.session.add(user_film_list)
     db.session.commit()
     return jsonify({"message": "Movie added to user's film list successfully"})
@@ -32,6 +33,6 @@ def remove_from_user_list():
 def get_user_film_list():
     user_id = get_jwt_identity()
     user_film_list = UserFilmList.query.filter_by(user_id=user_id).all()
-    movies = [Movie.query.get(item.movie_id).json for item in user_film_list]
+    movies = [Movie.query.get(item.movies_id).json for item in user_film_list]
     return jsonify(movies)
 
