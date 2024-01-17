@@ -1,6 +1,6 @@
 from flask import jsonify
 from werkzeug import exceptions
-from .models import Movie, Genre
+from .models import Movie, Genre, movie_genre_association
 import requests
 from .. import db
 import random
@@ -64,24 +64,22 @@ def show(id):
 
     return jsonify(movie.json)
 
+def get_random_movie(genre_id):
+    # Check if the genre exists
+    genre = Genre.query.get(genre_id)
+    if genre is None:
+        raise exceptions.NotFound("Genre not found")
 
-# def get_random_movie_by_genre(genre_id):
-#     try:
-#         genre = Genre.query.get(genre_id)
-#         if genre is None:
-#             raise exceptions.NotFound("Genre not found")
+    # Get movies of the specified genre using the association table
+    movies_of_genre = Movie.query.join(movie_genre_association).filter(movie_genre_association.c.genre_id == genre_id).all()
 
-#         movies_in_genre = genre.movies  # Remove the parentheses here
+    if not movies_of_genre:
+        raise exceptions.NotFound("No movies found for the specified genre")
 
-#         if not movies_in_genre:
-#             raise exceptions.NotFound(f"No movies found for the specified genre (ID: {genre_id})")
+    # Pick a random movie from the list
+    random_movie = random.choice(movies_of_genre)
 
-#         random_movie = random.choice(movies_in_genre)
-
-#         return jsonify(random_movie.json)
-
-#     except Exception as e:
-#         return {"error": str(e)}, 500
+    return jsonify(random_movie.json)
 
 
 def top_rated():

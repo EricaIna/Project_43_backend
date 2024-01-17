@@ -5,6 +5,8 @@ from application.auth.models import User
 from application.movies.controller import index_and_seed, genres_and_seed
 from application.reviews.models import Reviews
 from application.user_films_list.models import UserFilmList
+from sqlalchemy.sql import insert
+from application.movies.models import movie_genre_association
 
 
 app = create_app("PROD")
@@ -35,6 +37,80 @@ print("Saving movies dataset")
 df = pd.read_csv("../movie_dataset.csv")
 df.to_sql(name='movies_dataset', con=db.engine)
 print("movies dataset saved")
+
+movie_genre_data = [
+    {"movie_id": 1, "genre_id": 36},
+    {"movie_id": 1, "genre_id": 10752},
+    {"movie_id": 1, "genre_id": 18},
+    {"movie_id": 2, "genre_id": 18},
+    {"movie_id": 2, "genre_id": 36},
+    {"movie_id": 3, "genre_id": 28},
+    {"movie_id": 3, "genre_id": 12},
+    {"movie_id": 3, "genre_id": 14},
+    {"movie_id": 4, "genre_id": 28},
+    {"movie_id": 4, "genre_id": 53},
+    {"movie_id": 5, "genre_id": 35},
+    {"movie_id": 5, "genre_id": 10751},
+    {"movie_id": 5, "genre_id": 14},
+    {"movie_id": 6, "genre_id": 18},
+    {"movie_id": 6, "genre_id": 36},
+    {"movie_id": 7, "genre_id": 27},
+    {"movie_id": 7, "genre_id": 53},
+    {"movie_id": 7, "genre_id": 9648},
+    {"movie_id": 8, "genre_id": 878},
+    {"movie_id": 8, "genre_id": 18},
+    {"movie_id": 8, "genre_id": 28},
+    {"movie_id": 9, "genre_id": 16},
+    {"movie_id": 9, "genre_id": 10751},
+    {"movie_id": 9, "genre_id": 10402},
+    {"movie_id": 9, "genre_id": 14},
+    {"movie_id": 9, "genre_id": 35},
+    {"movie_id": 10, "genre_id": 878},
+    {"movie_id": 10, "genre_id": 18},
+    {"movie_id": 10, "genre_id": 28},
+    {"movie_id": 11, "genre_id": 28},
+    {"movie_id": 11, "genre_id": 35},
+    {"movie_id": 12, "genre_id": 16},
+    {"movie_id": 12, "genre_id": 12},
+    {"movie_id": 12, "genre_id": 35},
+    {"movie_id": 12, "genre_id": 10751},
+    {"movie_id": 13, "genre_id": 28},
+    {"movie_id": 13, "genre_id": 53},
+    {"movie_id": 14, "genre_id": 16},
+    {"movie_id": 14, "genre_id": 14},
+    {"movie_id": 14, "genre_id": 10751},
+    {"movie_id": 14, "genre_id": 10770},
+    {"movie_id": 14, "genre_id": 12},
+    {"movie_id": 14, "genre_id": 35},
+    {"movie_id": 15, "genre_id": 10749},
+    {"movie_id": 15, "genre_id": 18},
+    {"movie_id": 16, "genre_id": 16},
+    {"movie_id": 16, "genre_id": 35},
+    {"movie_id": 16, "genre_id": 14},
+    {"movie_id": 16, "genre_id": 12},
+    {"movie_id": 16, "genre_id": 10751},
+    {"movie_id": 16, "genre_id": 10749},
+    {"movie_id": 17, "genre_id": 28},
+    {"movie_id": 17, "genre_id": 35},
+    {"movie_id": 17, "genre_id": 80},
+    {"movie_id": 18, "genre_id": 16},
+    {"movie_id": 18, "genre_id": 12},
+    {"movie_id": 18, "genre_id": 28},
+    {"movie_id": 18, "genre_id": 35},
+    {"movie_id": 18, "genre_id": 10751},
+    {"movie_id": 19, "genre_id": 878},
+    {"movie_id": 19, "genre_id": 27},
+    {"movie_id": 19, "genre_id": 878},
+    {"movie_id": 20, "genre_id": 27}
+]
+insert_statement = insert(movie_genre_association).values(movie_genre_data)
+
+try:
+    db.session.execute(insert_statement)
+    db.session.commit()
+    print('hello')
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 user_list_data = [
     {"user_id": 1, "movies_id": 2},
