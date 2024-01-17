@@ -4,6 +4,7 @@ from .models import Movie, Genre, movie_genre_association
 import requests
 from .. import db
 import random
+from .models import movie_genre_association
 
 def index_and_seed(total_pages=10):
     base_url = "https://api.themoviedb.org/3/movie/now_playing"

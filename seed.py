@@ -23,7 +23,6 @@ result = db.session.execute(text('DROP TABLE IF EXISTS movies_dataset;'))
 db.session.commit()
 
 
-
 db.create_all()
 print("Creating database")
 
@@ -34,7 +33,7 @@ print("Saving genres")
 genres_and_seed()
 
 print("Saving movies dataset")
-df = pd.read_csv("../movie_dataset.csv")
+df = pd.read_csv("./movie_dataset.csv")
 df.to_sql(name='movies_dataset', con=db.engine)
 print("movies dataset saved")
 

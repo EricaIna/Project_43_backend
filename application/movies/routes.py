@@ -2,6 +2,7 @@ from flask import request, Blueprint
 from werkzeug import exceptions
 from application import create_app # app from __init__.py
 from .controller import index, show, top_rated, upcoming, genres, get_random_movie
+from .controller import index, show, top_rated, upcoming, genres, get_random_movie
 
 movies_blueprint = Blueprint('movies_blueprint', __name__)
 # app = create_app()
