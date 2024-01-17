@@ -1,7 +1,7 @@
 from flask import request, Blueprint
 from werkzeug import exceptions
 from application import create_app # app from __init__.py
-from .controller import index, show, top_rated, upcoming, genres
+from .controller import index, show, top_rated, upcoming, genres, get_random_movie
 
 movies_blueprint = Blueprint('movies_blueprint', __name__)
 # app = create_app()
@@ -25,6 +25,10 @@ def handle_upcomingMovies():
 @movies_blueprint.route('/movies/<int:id>', methods=["GET"])
 def handle_movie(id):
     if request.method == "GET": return show(id)
+
+@movies_blueprint.route('/movies/<int:genre_id>/random', methods=["GET"])
+def handle_random_movie(genre_id):
+    return get_random_movie(genre_id)
 
 # @movies_blueprint.route('/movies/genre/<int:genre_id>/random', methods=["GET"])
 # def handle_random_movie(genre_id):

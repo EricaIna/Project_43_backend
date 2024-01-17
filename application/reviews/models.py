@@ -19,6 +19,17 @@ class Reviews(db.Model):
         self.movies_id = movies_id
         self.Timestamp = datetime.utcnow()
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'Title': self.Title,
+            'Content': self.Content,
+            'Timestamp': self.Timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'Rating': self.Rating,
+            'user_id': self.user_id,
+            'movies_id': self.movies_id
+        }
+
 db.Index('reviews_unique_title', Reviews.Title, unique=True)
 db.ForeignKeyConstraint(['movies_id'], ['movies.id'])
 
