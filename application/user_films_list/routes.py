@@ -12,10 +12,7 @@ def handle_add_to_user_list():
 @user_film_list_blueprint.route('/user-film-list/remove', methods=["DELETE"])
 def handle_remove_from_user_list():
     if request.method == "DELETE":
-        data = request.json
-        user_id = data.get('user_id')
-        movie_id = data.get('movie_id')
-        return remove_from_user_list(user_id, movie_id)
+        return remove_from_user_list()
 
 @user_film_list_blueprint.route('/user-film-list', methods=["GET"])
 def handle_get_user_film_list():
