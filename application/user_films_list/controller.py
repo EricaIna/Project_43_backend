@@ -19,8 +19,8 @@ def add_to_user_list():
 def remove_from_user_list():
     user_id = get_jwt_identity()
     data = request.json
-    movie_id = data.get('movie_id')
-    user_film_list_item = UserFilmList.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+    movies_id = data.get('movies_id')
+    user_film_list_item = UserFilmList.query.filter_by(user_id=user_id, movies_id=movies_id).first()
 
     if user_film_list_item:
         db.session.delete(user_film_list_item)
