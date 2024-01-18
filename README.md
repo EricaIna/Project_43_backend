@@ -1,4 +1,4 @@
-# Movie Application
+# Filmfinders Application -- Back-End
 ## Setup
 
 - Clone the repository to your computer:
@@ -31,10 +31,12 @@ pipenv install scikit-learn pandas
 touch .env
 ```
 - Add to the .env file 
-    SQLALCHEMY_DATABASE_URI=<link to your DB>
-    FLASK_DEBUG=1
-    JWT_SECRET_KEY=
-    FLASK_APP=app.py
+```bash
+SQLALCHEMY_DATABASE_URI=<link to your DB>
+FLASK_DEBUG=1
+JWT_SECRET_KEY=
+FLASK_APP=app.py
+```
 - Seed the database: 
 ```bash
 python seed.py
@@ -45,6 +47,20 @@ python app.py
 ```
 You can see the app here:
 `http://localhost:4000/`
+
+## Technologies used
+- Python
+- Flask
+- Flask-cors
+- Pandas
+- JASON Web Token
+- Postgres
+
+
+## Significant Code
+![Significant code](Screenshots\SignificantCode_1.png?raw=true "Significant code screenshot")
+![Significant code](Screenshots\SignificantCode_2.png?raw=true "Significant code screenshot")
+
 
 
 
