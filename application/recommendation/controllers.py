@@ -45,6 +45,8 @@ def train_model():
 def recommend_movie(movie_ids):
     #doing the list from movie_ids
     list_of_movie_ids=movie_ids.split(";")
+    if (list_of_movie_ids[0]==''):
+        return -1
     list_of_movie_ids = [int(movie_id) for movie_id in list_of_movie_ids[:-1]] #make the list integer
     dictionary_of_similar_movies=dict()
 
@@ -54,12 +56,11 @@ def recommend_movie(movie_ids):
 
         i = 0
         for element in sorted_similar_movies:
-            dictionary_of_similar_movies[element[0]] = dictionary_of_similar_movies.get(element[0], 1) + 1
+            dictionary_of_similar_movies[element[0]] = dictionary_of_similar_movies.get(element[0], 0) + 1
             i = i + 1
             if i >= 5:
                 break
-
-    #Remove from dictionary_of_similar_movies all entries with keys from list_of_movie_ids
+     #Remove from dictionary_of_similar_movies all entries with keys from list_of_movie_ids
     dictionary_of_similar_movies = {key: value for key, value in dictionary_of_similar_movies.items() if key not in list_of_movie_ids}
-
+    
     return max(dictionary_of_similar_movies, key=dictionary_of_similar_movies.get)
