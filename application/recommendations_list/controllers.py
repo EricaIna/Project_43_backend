@@ -94,6 +94,8 @@ def recommend(id):
         return jsonify({"message": "Movie list is not found"}), 404
 
     new_movie_id = recommend_movie(movie_list.movie_ids)
+    if (new_movie_id==-1):
+        return jsonify({"message": "Please add a fav movie in the list"}), 404
     movie_list.movie_ids = movie_list.movie_ids + str(new_movie_id) + ";"
     db.session.add(movie_list)
     db.session.commit()
