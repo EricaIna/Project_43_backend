@@ -38,7 +38,7 @@ print("movies dataset saved")
 
 user_list_data = [
     {"user_id": 1, "movies_id": 2},
-    {"user_id": 2, "movies_id": 199}
+    {"user_id": 2, "movies_id": 150}
 ]
 
 for list_info in user_list_data:

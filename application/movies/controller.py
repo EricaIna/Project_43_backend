@@ -26,18 +26,22 @@ def index_and_seed(total_pages=10):
             data = response.json()
 
             for movie_data in data.get('results', []):
-                movie = Movie(
-                    original_title=movie_data.get('original_title'),
-                    original_language=movie_data.get('original_language'),
-                    overview=movie_data.get('overview'),
-                    vote_average=movie_data.get('vote_average'),
-                    release_date=movie_data.get('release_date'),
-                    poster_path=movie_data.get('poster_path'),
-                    genre_ids=movie_data.get('genre_ids'),
-                )
+                print (movie_data.get('genre_ids'))
+                print (movie_data.get('original_title'))
+                print ()
+                if movie_data.get('genre_ids'):
+                    movie = Movie(
+                        original_title=movie_data.get('original_title'),
+                        original_language=movie_data.get('original_language'),
+                        overview=movie_data.get('overview'),
+                        vote_average=movie_data.get('vote_average'),
+                        release_date=movie_data.get('release_date'),
+                        poster_path=movie_data.get('poster_path'),
+                        genre_ids=movie_data.get('genre_ids'),
+                    )
 
-                movie.poster_path = movie.poster_url
-                db.session.add(movie)
+                    movie.poster_path = movie.poster_url
+                    db.session.add(movie)
 
     # Commit the changes to the database after all pages are processed
     db.session.commit()
