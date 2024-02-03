@@ -1,2 +1,2 @@
-from application import create_app
-app=create_app()
+from src import create_app
+application=create_app()

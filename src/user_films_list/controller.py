@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from .. import db
 from .models import UserFilmList
-from application.movies.models import Movie
+from src.movies.models import Movie
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 @jwt_required()

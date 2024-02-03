@@ -2,8 +2,8 @@
 # Fixture
 
 import pytest
-from application import create_app
-from application.movies.models import Movie
+from src import create_app
+from src.movies.models import Movie
 
 
 # Fixture 
